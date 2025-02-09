@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -10,7 +11,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'caption' => 'required',
+            'caption' => 'required|string|max:255',
             'image' => 'nullable|image|max:2048',
         ]);
 
@@ -26,22 +27,28 @@ class PostController extends Controller
         $post->image = $imageData;
         $post->save();
 
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')->with('success', 'Postingan berhasil dibuat!');
     }
 
     public function index()
     {
-        // $posts = Post::with('user')->orderBy('created_at', 'desc')->get();
-        // return view('posts.index', compact('posts'));
-        $posts = Post::with('user')->latest()->get();
-        return view('posts.index', compact('posts'));
+        //$posts = Post::with(['user', 'comments.replies', 'comments.user'])->latest()->get();
+        $posts = Post::with(['user', 'comments.user', 'comments.replies.user'])->latest()->get();
+
+        // Mengambil rekomendasi user untuk diikuti
+        $recommendations = User::where('id', '!=', auth()->id())
+            ->whereDoesntHave('followers', fn($query) => $query->where('follower_id', auth()->id()))
+            ->limit(5)
+            ->get();
+
+        return view('posts.index', compact('posts', 'recommendations'));
     }
 
     public function comment(Request $request)
     {
         $request->validate([
             'post_id' => 'required|exists:posts,id',
-            'comment' => 'required',
+            'comment' => 'required|string|max:255',
         ]);
 
         auth()->user()->comments()->create([
@@ -49,14 +56,14 @@ class PostController extends Controller
             'comment' => $request->comment,
         ]);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('posts.index')->with('success', 'Komentar berhasil ditambahkan!');
     }
 
     public function reply(Request $request)
     {
         $request->validate([
             'post_id' => 'required|exists:posts,id',
-            'comment' => 'required',
+            'comment' => 'required|string|max:255',
             'parent_comment_id' => 'required|exists:comments,id',
         ]);
 
@@ -66,6 +73,6 @@ class PostController extends Controller
             'parent_comment_id' => $request->parent_comment_id,
         ]);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('posts.index')->with('success', 'Balasan berhasil ditambahkan!');
     }
 }

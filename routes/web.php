@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,6 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('posts', PostController::class);
     Route::get('/', [PostController::class, 'index'])->name('posts.index');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+
+    Route::post('/add-comment', [CommentController::class, 'addComment'])->name('addComment');
+    Route::post('/add-reply', [CommentController::class, 'addReply'])->name('addReply');
+    Route::post('/delete-comment', [CommentController::class, 'deleteComment'])->name('deleteComment');
 });
 
 require __DIR__.'/auth.php';

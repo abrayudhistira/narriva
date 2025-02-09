@@ -1,6 +1,17 @@
 <!-- Sidebar (tidak di dalam container, tetap di sebelah kanan) -->
 <div class="rightsidebar" style="position: fixed; top: 0; right: 0; height: 100vh; width: 14.28%; background-color: #fff; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-  <!-- Profil User -->
+    <!-- Tombol Logout -->
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+        <a href="{{ route('logout') }}" 
+        onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="text-decoration: none; color: #e53e3e; display: flex; align-items: center;">
+        <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
+        </a>
+        <!-- Form Logout (Hidden) -->
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+        </form>
+    </div>  
+<!-- Profil User -->
   <div class="profile" style="display: flex; align-items: center; margin-bottom: 16px;">
     <div class="flex items-center">
       @if (auth()->user()->profile_picture)

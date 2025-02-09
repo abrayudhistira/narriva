@@ -79,5 +79,45 @@
                 });
             });
             </script>
+            <!-- JavaScript: Transisi Modal, Toggle Reply, dan lainnya -->
+            <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // // Toggle reply form dengan transisi (gunakan class 'active')
+                // document.querySelectorAll(".toggle-reply").forEach(function(icon) {
+                // icon.addEventListener("click", function() {
+                //     const replyFormContainer = this.closest(".comment").querySelector(".reply-form-container");
+                //     replyFormContainer.classList.toggle("active");
+                // });
+                // });
+                
+                // Contoh toggle left sidebar (jika diperlukan)
+                document.getElementById('toggle-left-sidebar')?.addEventListener('click', function(){
+                document.getElementById('main-container').classList.toggle('leftsidebar-open');
+                });
+                
+                // Modal: buka full image dengan transisi
+                document.querySelectorAll('.left-side.feeds img').forEach(function(image) {
+                image.addEventListener('click', function() {
+                    var modal = document.getElementById('imageModal');
+                    var modalImage = document.getElementById('modalImage');
+                    modalImage.src = this.src;
+                    modal.classList.add('open');
+                });
+                });
+                
+                // Modal: tutup ketika klik tombol close
+                document.getElementById('closeModal').addEventListener('click', function() {
+                document.getElementById('imageModal').classList.remove('open');
+                });
+                
+                // Modal: tutup ketika klik di luar modal content
+                document.getElementById('imageModal').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    this.classList.remove('open');
+                }
+                });
+            });
+            
+            </script>
     </body>
 </html>

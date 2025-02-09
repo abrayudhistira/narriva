@@ -44,7 +44,7 @@ class PostController extends Controller
         // Mengambil rekomendasi user untuk diikuti
         $recommendations = User::where('id', '!=', auth()->id())
             ->whereDoesntHave('followers', fn($query) => $query->where('follower_id', auth()->id()))
-            ->limit(5)
+            ->limit(25)
             ->get();
 
         return view('posts.index', compact('posts', 'recommendations'));

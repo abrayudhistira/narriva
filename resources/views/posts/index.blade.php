@@ -147,25 +147,22 @@
       <div class="recommendation-card bg-white p-4 mt-4 rounded shadow-md">
         <h2 class="font-semibold text-lg mb-4">Rekomendasi untuk Diikuti</h2>
         @foreach ($recommendations as $user)
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4 mb-4">
                 <img src="{{ $user->profile_picture ?? asset('default-avatar.png') }}" alt="Profile Picture" class="w-16 h-16 rounded-full object-cover">
                 <span>{{ $user->username }}</span>
-                
+
                 @if (auth()->user()->following->contains($user))
-                    <form method="POST" action="{{ route('unfollow', $user) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="bg-red-500 text-white px-4 py-1 rounded">Unfollow</button>
-                    </form>
+                <button onclick="unfollowUser({{ $user->id }})" class="text-green-500 hover:text-green-700">
+                    <i class="fas fa-bell"></i> <!-- Ikon bel berdering -->
+                </button>
                 @else
-                    <form method="POST" action="{{ route('follow', $user) }}">
-                        @csrf
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded">Follow</button>
-                    </form>
+                <button onclick="followUser({{ $user->id }})" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-bell-slash"></i> <!-- Ikon bel tidak berdering -->
+                </button>
                 @endif
             </div>
         @endforeach
-      </div>
+        </div>
     </div>
 
   </div>

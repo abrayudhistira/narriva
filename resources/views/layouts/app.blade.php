@@ -10,8 +10,10 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
         <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
@@ -32,5 +34,40 @@
                 {{ $slot }}
             </main>
         </div>
+            <script>
+            function followUser(userId) {
+                $.ajax({
+                url: `/user/${userId}/follow`,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    // Perbarui tampilan ikon setelah follow berhasil
+                    location.reload(); // Atau perbarui ikon secara dinamis tanpa reload
+                },
+                error: function(error) {
+                    console.error('Error following user:', error);
+                }
+                });
+            }
+
+            function unfollowUser(userId) {
+                $.ajax({
+                url: `/user/${userId}/unfollow`,
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    // Perbarui tampilan ikon setelah unfollow berhasil
+                    location.reload(); // Atau perbarui ikon secara dinamis tanpa reload
+                },
+                error: function(error) {
+                    console.error('Error unfollowing user:', error);
+                }
+                });
+            }
+            </script>
     </body>
 </html>

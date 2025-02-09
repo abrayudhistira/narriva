@@ -12,14 +12,12 @@ class UserController extends Controller
         if (Auth::user()->id !== $user->id) {
             Auth::user()->following()->attach($user->id);
         }
-
-        return redirect()->back()->with('success', "You are now following {$user->name}.");
+        return response()->json(['message' => "You are now following {$user->name}."]);
     }
 
     public function unfollow(User $user)
     {
         Auth::user()->following()->detach($user->id);
-
-        return redirect()->back()->with('success', "You have unfollowed {$user->name}.");
+        return response()->json(['message' => "You have unfollowed {$user->name}."]);
     }
 }

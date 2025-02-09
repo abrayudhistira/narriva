@@ -1,4 +1,4 @@
-<x-app-layout>
+<!-- <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard - Posts Feed') }}
@@ -42,7 +42,7 @@
                                     <p class="font-bold">{{ $comment->user->name }}</p>
                                     <p>{{ $comment->comment }}</p>
 
-                                    <!-- Reply Form -->
+                                    
                                     <form action="{{ route('posts.reply') }}" method="POST" class="mt-2">
                                         @csrf
                                         <input type="hidden" name="post_id" value="{{ $post->id }}">
@@ -55,7 +55,7 @@
                                 </div>
                             @endforeach
 
-                            <!-- Comment Form -->
+                            
                             <form action="{{ route('posts.comment') }}" method="POST" class="mt-4">
                                 @csrf
                                 <input type="hidden" name="post_id" value="{{ $post->id }}">
@@ -70,4 +70,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-app-layout> -->

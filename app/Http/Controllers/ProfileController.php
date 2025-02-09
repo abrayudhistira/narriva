@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
+use App\Models\Post;
 
 class ProfileController extends Controller
 {
@@ -62,5 +64,23 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+    // public function show(User $user)
+    // {
+    //     $followers = $user->followers()->count();
+    //     $following = $user->following()->count();
+    //     $posts = Post::where('user_id', $user->id)->count();
+
+    //     return view('profile.show', compact('user', 'followers', 'following', 'posts'));
+    // }
+    public function show($username)
+    {
+        $user = User::where('username', $username)->firstOrFail();
+
+        $followers = $user->followers()->count(); // Assuming relationship exists
+        $following = $user->following()->count(); // Assuming relationship exists
+        $posts = Post::where('user_id', $user->id)->get();
+
+        return view('profile-public', compact('user', 'followers', 'following', 'posts'));
     }
 }

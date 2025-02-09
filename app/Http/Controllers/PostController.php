@@ -27,13 +27,19 @@ class PostController extends Controller
         $post->image = $imageData;
         $post->save();
 
-        return redirect()->route('posts.index')->with('success', 'Postingan berhasil dibuat!');
+        return redirect()->back()->with('success', 'Post berhasil dibuat!');
     }
 
     public function index()
     {
         //$posts = Post::with(['user', 'comments.replies', 'comments.user'])->latest()->get();
-        $posts = Post::with(['user', 'comments.user', 'comments.replies.user'])->latest()->get();
+        //$posts = Post::with(['user', 'comments.user', 'comments.replies.user'])->latest()->get();
+        $posts = Post::with(['comments' => function ($query) {
+            $query->whereNull('parent_comment_id') // Ambil hanya komentar utama
+                  ->with(['replies' => function ($query) {
+                      $query->whereNotNull('parent_comment_id'); // Ambil balasan untuk setiap komentar
+                  }]);
+        }])->latest()->get();
 
         // Mengambil rekomendasi user untuk diikuti
         $recommendations = User::where('id', '!=', auth()->id())

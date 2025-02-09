@@ -18,8 +18,9 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
+            <!-- @include('layouts.navigation') -->
+            @include('layouts.leftsidebar')
+            @include('layouts.rightsidebar')
             <!-- Page Heading -->
             @isset($header)
                 <header class="bg-white shadow">
@@ -68,6 +69,15 @@
                 }
                 });
             }
+            document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".toggle-reply").forEach(function (icon) {
+                    icon.addEventListener("click", function () {
+                        const commentId = this.closest(".comment").querySelector("input[name='parent_comment_id']").value;
+                        const replyFormContainer = document.getElementById(`reply-form-${commentId}`);
+                        replyFormContainer.style.display = replyFormContainer.style.display === "none" ? "block" : "none";
+                    });
+                });
+            });
             </script>
     </body>
 </html>

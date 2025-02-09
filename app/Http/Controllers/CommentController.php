@@ -37,13 +37,10 @@ class CommentController extends Controller
             'reply_comment' => 'required|string|max:255',
         ]);
 
-        // Mendapatkan user yang sedang login
-        $user_id = auth()->id();
-
         // Menyimpan balasan sebagai komentar dengan parent_comment_id
         $comment = new Comment();
         $comment->post_id = $validated['post_id'];
-        $comment->user_id = $user_id;
+        $comment->user_id = auth()->id();
         $comment->comment = $validated['reply_comment'];
         $comment->parent_comment_id = $validated['parent_comment_id']; // Menandakan ini adalah balasan
         $comment->save();

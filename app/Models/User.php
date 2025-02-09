@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -90,13 +91,32 @@ class User extends Authenticatable
             throw new \InvalidArgumentException('Invalid profile picture format.');
         }
     }
+    // public function followers()
+    // {
+    //     return $this->belongsToMany(User::class, 'follows', 'user_id', 'follower_id');
+    // }
+
+    // public function following()
+    // {
+    //     return $this->belongsToMany(User::class, 'follows', 'follower_id', 'user_id');
+    // }
     public function followers()
     {
-        return $this->belongsToMany(User::class, 'follows', 'user_id', 'follower_id');
+        return $this->belongsToMany(User::class, 'followers', 'following_id', 'follower_id');
     }
 
     public function following()
     {
-        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'user_id');
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id');
+    }
+    // Relasi untuk mendapatkan postingan
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+    // Relasi: Pengguna memiliki banyak komentar
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }

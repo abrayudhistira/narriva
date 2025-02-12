@@ -31,11 +31,15 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => ['required', 'string', 'max:50', 'unique:users'],
+            'username' => ['required', 'string', 'max:50', 'unique:users','regex:/^[a-z0-9_.]+$/'],
             'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name' => ['required', 'string', 'max:50', 'unique:users'],
             'profile_picture' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Max 2MB
             'bio' => ['nullable', 'string'],
+        ], [
+            'username.unique' => 'Username tersebut telah ada.',
+            'username.regex' => 'Pastikan hanya huruf kecil semua, underscore (_), dan angka.',
         ]);
 
         if ($validator->fails()) {
@@ -47,6 +51,7 @@ class RegisteredUserController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => $request->password,
+            'name' => $request->name,
             'profile_picture' => $request->file('profile_picture'),
             'bio' => $request->bio,
         ]);

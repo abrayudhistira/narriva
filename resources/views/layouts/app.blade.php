@@ -69,14 +69,32 @@
                 }
                 });
             }
-            document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".toggle-reply").forEach(function (icon) {
-                    icon.addEventListener("click", function () {
-                        const commentId = this.closest(".comment").querySelector("input[name='parent_comment_id']").value;
-                        const replyFormContainer = document.getElementById(`reply-form-${commentId}`);
-                        replyFormContainer.style.display = replyFormContainer.style.display === "none" ? "block" : "none";
-                    });
+            // document.addEventListener("DOMContentLoaded", function () {
+            // document.querySelectorAll(".toggle-reply").forEach(function (icon) {
+            //         icon.addEventListener("click", function () {
+            //             const commentId = this.closest(".comment").querySelector("input[name='parent_comment_id']").value;
+            //             const replyFormContainer = document.getElementById(`reply-form-${commentId}`);
+            //             replyFormContainer.style.display = replyFormContainer.style.display === "none" ? "block" : "none";
+            //         });
+            //     });
+            // });
+            document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM sudah siap, binding event reply');
+
+            document.querySelectorAll('.toggle-reply').forEach(function(button) {
+                button.addEventListener('click', function() {
+                var targetId = this.getAttribute('data-target');
+                console.log('Toggle reply untuk:', targetId);
+                var replyFormContainer = document.getElementById(targetId);
+                if (replyFormContainer) {
+                    replyFormContainer.classList.toggle('active');
+                } else {
+                    console.error('Element dengan id', targetId, 'tidak ditemukan.');
+                }
                 });
+            });
+
+            // ... kode modal (jika diperlukan)
             });
             </script>
             <!-- JavaScript: Transisi Modal, Toggle Reply, dan lainnya -->
@@ -119,5 +137,35 @@
             });
             
             </script>
+           <script>
+                function toggleFollow(userId, isFollowed) {
+                    const endpoint = isFollowed ? `/user/${userId}/follow` : `/user/${userId}/unfollow`;
+                    const method = isFollowed ? 'POST' : 'DELETE';
+
+                    fetch(endpoint, {
+                    method: method,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    }
+                    })
+                    .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                    console.log(isFollowed ? 'Berhasil mengikuti user.' : 'Berhasil berhenti mengikuti user.');
+                    })
+                    .catch(error => {
+                    console.error('Error saat melakukan toggle follow:', error);
+                    const toggleElement = document.getElementById('switch-' + userId);
+                    if (toggleElement) {
+                        toggleElement.checked = !isFollowed;
+                    }
+                    });
+                }
+                </script>
     </body>
 </html>

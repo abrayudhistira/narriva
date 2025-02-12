@@ -64,21 +64,24 @@
     <!-- Profile Section -->
     <div class="container mx-auto py-6">
         <div class="profile-header">
-            <img src="{{ auth()->user()->profile_picture }}" alt="Profile Picture">
+            <img src="{{ $user->profile_picture }}" alt="Profile Picture">
             <h2 class="text-2xl font-bold">{{ $user->name }}</h2>
             <p class="text-gray-400">{{ $user->username }}</p>
 
             <div class="stats-container mt-4">
                 <div class="stats-item">
-                    <p>{{ count(auth()->user()->followers) }}</p>
+                    <!-- Gunakan $user->followers untuk menghitung jumlah pengikut -->
+                    <p>{{ count($user->followers) }}</p>
                     <span class="stats-label">Pengikut</span>
                 </div>
                 <div class="stats-item">
-                    <p>{{ count(auth()->user()->following) }}</p>
+                    <!-- Gunakan $user->following untuk menghitung jumlah yang diikuti -->
+                    <p>{{ count($user->following) }}</p>
                     <span class="stats-label">Mengikuti</span>
                 </div>
                 <div class="stats-item">
-                    <p>{{ count(auth()->user()->posts) }}</p>
+                    <!-- Gunakan $user->posts untuk menghitung jumlah postingan -->
+                    <p>{{ count($user->posts) }}</p>
                     <span class="stats-label">Postingan</span>
                 </div>
                 <div class="stats-item">

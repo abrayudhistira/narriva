@@ -21,6 +21,12 @@
         <x-input-error :messages="$errors->get('username')" class="mt-2" />
     </div>
 
+    <div class="mt-4">
+        <x-input-label for="name" :value="__('Name')" />
+        <x-text-input id="name" type="text" name="name" :value="$user->name" class="mt-1 block w-full" required />
+        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+    </div>
+
     <!-- Email -->
     <div class="mt-4">
         <x-input-label for="email" :value="__('Email')" />

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Story;
 
 class PostController extends Controller
 {
@@ -41,13 +42,16 @@ class PostController extends Controller
                   }]);
         }])->latest()->get();
 
+        // Ambil semua story aktif (belum expired)
+        $stories = Story::active()->with('user')->get();
+
         // Mengambil rekomendasi user untuk diikuti
         $recommendations = User::where('id', '!=', auth()->id())
             ->whereDoesntHave('followers', fn($query) => $query->where('follower_id', auth()->id()))
             ->limit(25)
             ->get();
 
-        return view('posts.index', compact('posts', 'recommendations'));
+        return view('posts.index', compact('posts', 'recommendations','stories'));
     }
 
     public function comment(Request $request)

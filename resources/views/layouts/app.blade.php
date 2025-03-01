@@ -16,8 +16,9 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
+
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-black">
             <!-- @include('layouts.navigation') -->
             @include('layouts.leftsidebar')
             @include('layouts.rightsidebar')
@@ -100,14 +101,6 @@
             <!-- JavaScript: Transisi Modal, Toggle Reply, dan lainnya -->
             <script>
             document.addEventListener("DOMContentLoaded", function() {
-                // // Toggle reply form dengan transisi (gunakan class 'active')
-                // document.querySelectorAll(".toggle-reply").forEach(function(icon) {
-                // icon.addEventListener("click", function() {
-                //     const replyFormContainer = this.closest(".comment").querySelector(".reply-form-container");
-                //     replyFormContainer.classList.toggle("active");
-                // });
-                // });
-                
                 // Contoh toggle left sidebar (jika diperlukan)
                 document.getElementById('toggle-left-sidebar')?.addEventListener('click', function(){
                 document.getElementById('main-container').classList.toggle('leftsidebar-open');
@@ -166,6 +159,139 @@
                     }
                     });
                 }
+                </script>
+                //ini adalah untuk js story
+                <script>
+                    let currentStoryIndex = 0;
+                    let stories = [];
+                    let storyInterval;
+                    let progressInterval;
+
+                    // Fungsi untuk membuka story
+                    function viewStory(storyId) {
+                        fetch(`/stories/${storyId}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                stories = data.stories;
+                                currentStoryIndex = 0;
+                                showStory();
+                            })
+                            .catch(error => {
+                                console.error('There was a problem with the fetch operation:', error);
+                                alert('Failed to load stories. Please try again.');
+                            });
+                    }
+
+                    // Fungsi untuk menampilkan story
+                    function showStory() {
+                        const storyModal = document.getElementById('storyModal');
+                        const storyImage = document.getElementById('storyImage');
+                        const progress = document.getElementById('progress');
+
+                        if (currentStoryIndex >= stories.length) {
+                            closeStory();
+                            return;
+                        }
+
+                        storyImage.src = `data:image/jpeg;base64,${stories[currentStoryIndex].image}`;
+                        storyModal.style.display = 'block';
+
+                        // Reset progress bar
+                        progress.style.width = '0%';
+
+                        // Animate progress bar
+                        let width = 0;
+                        clearInterval(progressInterval);
+                        progressInterval = setInterval(() => {
+                            if (width >= 100) {
+                                clearInterval(progressInterval);
+                                currentStoryIndex++;
+                                showStory();
+                            } else {
+                                width++;
+                                progress.style.width = width + '%';
+                            }
+                        }, 300); // 300ms untuk 30 detik
+                    }
+
+                    // Fungsi untuk tombol "Next"
+                    function nextStory() {
+                        clearInterval(progressInterval);
+                        currentStoryIndex++;
+                        showStory();
+                    }
+
+                    // Fungsi untuk tombol "Previous"
+                    function previousStory() {
+                        clearInterval(progressInterval);
+                        if (currentStoryIndex > 0) {
+                            currentStoryIndex--;
+                            showStory();
+                        }
+                    }
+
+                    // Fungsi untuk menutup story
+                    function closeStory() {
+                        const storyModal = document.getElementById('storyModal');
+                        clearInterval(progressInterval);
+                        storyModal.style.display = 'none';
+                        currentStoryIndex = 0;
+                    }
+
+                    // Fungsi untuk membuka modal upload
+                    function openUploadModal() {
+                        console.log('Opening upload modal...');
+                        const uploadModal = document.getElementById('uploadModal');
+                        console.log('Modal ditemukan:', uploadModal); // Debugging
+                        if (uploadModal) {
+                            uploadModal.style.display = 'block';
+                            console.log('Modal ditampilkan'); // Debugging
+                        } else {
+                            console.error('Modal upload tidak ditemukan!');
+                        }
+                    }
+
+                    // Fungsi untuk menutup modal upload
+                    function closeUploadModal() {
+                        const uploadModal = document.getElementById('uploadModal');
+                        if (uploadModal) {
+                            uploadModal.style.display = 'none';
+                        }
+                    }
+                    <script>
+                        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+                        //e.preventDefault(); // Mencegah submit langsung untuk debug
+
+                        const formData = new FormData(this);
+                        const file = formData.get('image');
+                        
+                        // Debug di console
+                        console.log('File yang akan diunggah:', file);
+                        console.log('Tipe:', file.type);
+                        console.log('Ukuran:', file.size);
+
+                        // Kirim form secara manual setelah debug
+                        fetch(this.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        })
+                        //.then(response => response.json())
+                        // .then(data => {
+                        //     console.log('Respons server:', data);
+                        //     alert(data.message || 'Story berhasil diunggah!');
+                        //     location.reload(); // Refresh setelah berhasil
+                        // })
+                        // .catch(error => console.error('Error saat upload:', error));
+                    });
+                    </script>
                 </script>
     </body>
 </html>

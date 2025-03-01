@@ -219,13 +219,13 @@
       .comment-form {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Aligns the form content to the right */
+  justify-content: flex-start; /* Elemen mulai dari kiri */
+  flex-wrap: nowrap;            /* Pastikan semua elemen tetap satu baris */
+  width: 100%;                 /* Mengambil lebar penuh dari kontainer */
   margin-bottom: 16px;
-  transition: all 1s ease;
-  gap: 5px;
-
+  gap: 10px;
+  color: #eaeaea;
 }
-
 
 .comment-form textarea {
   flex: 1;
@@ -233,25 +233,26 @@
   background-color: rgb(13, 13, 13);
   border: 1px solid rgb(17, 17, 17);
   border-radius: 4px;
-  resize: none;        /* Menghilangkan kemampuan mengubah ukuran */
-  height: 40px;        /* Menetapkan tinggi tetap agar hanya satu baris */
-  overflow: hidden;    /* Mencegah konten meluber */
+  resize: none;
+  height: 40px;
+  overflow: hidden;
   transition: all 1s ease;
-
 }
 
-      .comment-form button {
-        margin-left: 8px;
-        border: none;
-        background: none;
-        cursor: pointer;
-        font-size: 1.2em;
-        color: #007BFF;
-        transition: color 1s ease;
-      }
-      .comment-form button:hover {
-        color: #0056b3;
-      }
+.comment-form button {
+  margin-left: auto;  /* Mendorong tombol ke paling kanan */
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #eaeaea;
+  transition: color 1s ease;
+}
+
+.comment-form button:hover {
+  color: #eaeaea;
+}
+
       
       /* Komentar & Reply */
       .comment-container {
@@ -309,6 +310,7 @@
 
 .reply-form-container.active {
   /* Naikkan nilai max-height sesuai dengan tinggi konten form reply */
+  
   max-height: 500px;
   opacity: 1;
   /* Jika perlu, tambahkan padding agar transisinya lebih halus */
@@ -322,15 +324,17 @@
         display: flex;
         align-items: center;
         transition: all 1s ease;
+        color: #eaeaea;
         
       }
       .reply-form textarea {
         flex: 1;
         padding: 8px;
-        border: 1px solid #ccc;
+        
         border-radius: 4px;
-        background-color: #fff;
-        color: #333;
+        background-color: rgb(13, 13, 13);
+  border: 1px solid rgb(17, 17, 17);
+        color: #eaeaea;
         resize: none;
         min-height: 40px;
         transition: all 1s ease;
@@ -341,11 +345,11 @@
         background: none;
         cursor: pointer;
         font-size: 1.2em;
-        color: #007BFF;
+        color:rgb(218, 218, 218);
         transition: color 1s ease;
       }
       .reply-form .icon-button:hover {
-        color: #0056b3;
+        color:rgb(218, 218, 218)3;
       }
       .reply {
         margin-left: 16px;
@@ -403,11 +407,223 @@
 
       
     </style>
+
+
+<style>
+      /* ... (styles sebelumnya tetap dipertahankan) ... */
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        .container {
+          width: 100% !important;
+          margin-left: 0 !important;
+          padding: 8px;
+        }
+        
+        .flex-row {
+          flex-direction: column;
+        }
+        
+        .left-side.feeds {
+          flex-basis: 100%;
+          order: 1;
+          margin-bottom: 16px;
+        }
+        
+        .right-side {
+          flex-basis: 100%;
+          order: 2;
+        }
+        
+        .header-post {
+    display: flex;            /* pastikan container flex */
+    flex-direction: row;      /* atur elemen secara horizontal */
+    align-items: center;  
+   /* agar elemen sejajar secara vertikal */
+  }
+  
+  .profile-img {
+    margin-right: 10px;       /* beri jarak antara foto dan informasi user */
+    margin-bottom: 0;         /* hilangkan margin bawah jika ada */
+  }
+  
+   /* Mengatur container komentar & reply agar lebarnya tetap sesuai dengan feed image */
+   .container-commentreply {
+      height: auto;
+      max-height: 400px;
+      width: 100%;
+      max-width: 490%;  /* Sesuaikan nilai ini dengan lebar gambar feeds */
+      margin: 0 auto;    /* center container */
+    }
+       
+
+
+}
+
+        
+     
+        
+        .comment-form textarea {
+          width: 100%;
+          margin-bottom: 8px;
+        }
+        
+        .comment-header p {
+          font-size: 16px;
+        }
+
+        .reply{
+          font-size: 14px;
+        }
+        
+        .modal-content {
+          max-width: 100%;
+          max-height: 90vh;
+        }
+        
+        .reply-form {
+          flex-direction: column;
+        }
+        
+        .reply-form textarea {
+          width: 100%;
+          margin-bottom: 8px;
+        }
+        
+        .container-commentreply {
+          height: auto;
+          max-height: 400px;
+        }
+        
+        .user-info p {
+          font-size: 16px;
+        }
+        
+        .user-info span {
+          font-size: 12px;
+        }
+        
+        .caption p {
+          font-size: 14px;
+        }
+        .custom-file-label
+        {
+          width: 70%;
+        }
+      }
+
+      /* Mobile Landscape Adjustment */
+      @media (max-width: 768px) and (orientation: landscape) {
+        .container-commentreply {
+          max-height: 250px;
+        }
+        
+        .left-side.feeds {
+          aspect-ratio: 1.5/1;
+        }
+      }
+
+      /* Very Small Screens */
+      @media (max-width: 480px) {
+        .profile-img {
+          size: 100%;
+        }
+        
+        .upload-section h3 {
+          font-size: 16px;
+        }
+        
+   
+
+
+        .upload-section {
+          padding: 16px;
+        }
+        
+        .post-card {
+          padding: 16px;
+        }
+        
+        .comment {
+          padding-left: 15px;
+        }
+        
+        .reply {
+          margin-left: 8px;
+        }
+      }
+
+
+    </style>
+
+    
   </head>
   <body>
     <!-- Container Postingan -->
     <div class="container" id="main-container">
-      
+
+    <!-- Container Story -->
+<section class="stories-container flex items-center space-x-4 p-4 bg-gray-50">
+    <!-- Tombol Upload Story -->
+    <div class="story-upload text-center">
+        <button onclick="openUploadModal()" class="w-16 h-16 rounded-full border-2 border-dashed flex items-center justify-center hover:bg-gray-100">
+            <i class="fas fa-plus text-2xl"></i>
+        </button>
+        <div class="mt-2 text-sm">Your Story</div>
+        <!-- resources/views/stories/index.blade.php -->
+        <div class="grid grid-cols-3 gap-4">
+            @foreach ($stories as $story)
+                <div class="p-4 border rounded-lg">
+                    <h2 class="text-lg font-semibold">Story dari User {{ $story->user_id }}</h2>
+                    @if($story->image_base64 && $story->mime)
+                        <img src="data:{{ $story->mime }};base64,{{ $story->image_base64 }}" 
+                            alt="Story Image" class="w-full h-auto rounded">
+                    @else
+                        <p>Tidak ada gambar.</p>
+                    @endif
+                    <p class="text-gray-600 mt-2">{{ $story->created_at->format('d M Y H:i') }}</p>
+                </div>
+            @endforeach
+        </div>
+</section>
+
+<!-- Modal Upload Story (disembunyikan secara default dengan kelas "hidden") -->
+<div id="uploadModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-4 rounded shadow-lg relative">
+        <!-- Tombol untuk menutup modal -->
+        <button onclick="closeUploadModal()" class="absolute top-2 right-2 text-gray-600 text-2xl">&times;</button>
+        <h2 class="text-xl mb-4">Upload Story</h2>
+        <form id="uploadForm" action="{{ route('stories.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="file" name="image" accept="image/*" required class="border p-2">
+            <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Upload</button>
+        </form>
+    </div>
+</div>
+
+<!-- Script untuk mengatur tampil/sembunyi modal -->
+<script>
+function openUploadModal() {
+    const uploadModal = document.getElementById('uploadModal');
+    if (uploadModal) {
+        uploadModal.classList.remove('hidden');
+    } else {
+        console.error('Modal upload tidak ditemukan!');
+    }
+}
+
+function closeUploadModal() {
+    const uploadModal = document.getElementById('uploadModal');
+    if (uploadModal) {
+        uploadModal.classList.add('hidden');
+    }
+}
+</script>
+
+
+
+
+    
       <!-- Section Upload Feed -->
 <div class="upload-section">
   <h3>Upload Feed</h3>
@@ -428,6 +644,10 @@
     </div>
   </form>
 </div>
+
+
+
+
       
       <!-- Loop Postingan -->
       @foreach ($posts as $post)
@@ -464,10 +684,10 @@
   <input type="hidden" name="post_id" value="{{ $post->id }}">
   <textarea name="comment" placeholder="Tulis komentar..." rows="1"></textarea>
   <button type="submit" class="icon-button">
-  <img src="./images/chat.png" alt="Comment Icon" style="width: 40%;">
-
+    <img src="./images/chat.png" alt="Comment Icon" style="width: 30px;">
   </button>
 </form>
+
 
 
 
@@ -495,10 +715,10 @@
     <input type="hidden" name="parent_comment_id" value="{{ $comment->id }}">
     <textarea name="reply_comment" placeholder="Tulis reply..." rows="1"></textarea>
     <button type="submit" class="icon-button">
-  <img src="./images/auto-reply.png" alt="Auto Reply Icon" width="50%">
+  <img src="./images/auto-reply.png" alt="Auto Reply Icon" width="40%">
 </button>
 
-      <i class="fas fa-paper-plane"></i>
+    
     </button>
   </form>
 </div>
